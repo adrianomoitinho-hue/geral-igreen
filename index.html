@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iGreen Energia — Reduza sua conta de luz</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'green-hero': '#0a2218',
+            'green-vivid': '#1db954',
+            'green-mid': '#14532d',
+            'green-light': '#dcfce7',
+            'green-accent': '#22c55e',
+          },
+          fontFamily: {
+            'display': ['Syne', 'sans-serif'],
+            'body': ['DM Sans', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    * { font-family: 'DM Sans', sans-serif; }
+    h1, h2, h3, .font-display { font-family: 'Syne', sans-serif; }
+
+    /* Hero background grain + gradient */
+    .hero-bg {
+      background-color: #0a2218;
+      background-image:
+        radial-gradient(ellipse 80% 60% at 60% 0%, rgba(29,185,84,0.18) 0%, transparent 60%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 40% 50% at 20% 80%, rgba(29,185,84,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Badge pill */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 999px;
+    }
+
+    .badge-dark {
+      background: rgba(29,185,84,0.18);
+      border: 1px solid rgba(29,185,84,0.35);
+      color: #4ade80;
+    }
+
+    .badge-light {
+      background: #dcfce7;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+    }
+
+    /* Botão WhatsApp verde vivo */
+    .btn-wpp {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #1db954;
+      color: #fff;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(29,185,84,0.35);
+    }
+    .btn-wpp:hover {
+      background: #17a34a;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(29,185,84,0.45);
+    }
+    .btn-wpp:active { transform: translateY(0); }
+
+    /* Botão Instagram outline */
+    .btn-ig {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      color: #fff;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      border: 2px solid rgba(255,255,255,0.3);
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    }
+    .btn-ig:hover {
+      border-color: #fff;
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-2px);
+    }
+
+    /* Passo círculo numerado */
+    .step-num {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #1db954;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(29,185,84,0.4);
+    }
+
+    /* Card de perfil */
+    .profile-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 24px 20px;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .profile-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+      transform: translateY(-3px);
+    }
+
+    /* Destaque de economia */
+    .savings-box {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border: 1.5px solid #86efac;
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    /* Footer escuro */
+    .footer-bg {
+      background: #0a2218;
+      background-image: radial-gradient(ellipse 70% 60% at 50% 100%, rgba(29,185,84,0.15) 0%, transparent 60%);
+    }
+
+    /* Float WPP */
+    .float-wpp {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
+      width: 58px;
+      height: 58px;
+      background: #25d366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 24px rgba(37,211,102,0.55);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .float-wpp:hover {
+      transform: scale(1.1);
+      box-shadow: 0 10px 32px rgba(37,211,102,0.6);
+    }
+
+    /* Divisor linha verde */
+    .green-divider {
+      width: 48px;
+      height: 3px;
+      background: #1db954;
+      border-radius: 2px;
+      margin: 12px 0 0 0;
+    }
+
+    /* Animação de entrada suave */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeup { animation: fadeUp 0.7s ease both; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.22s; }
+    .delay-3 { animation-delay: 0.34s; }
+    .delay-4 { animation-delay: 0.46s; }
+  </style>
+</head>
+<body class="bg-white text-gray-800 antialiased overflow-x-hidden">
+
+  <!-- ═══════════════════════════════════════════
+       SEÇÃO 1 — HERO
+  ═══════════════════════════════════════════ -->
+  <section class="hero-bg relative min-h-screen flex items-center px-5 py-20 md:py-28">
+    <div class="relative z-10 max-w-3xl mx-auto w-full text-center">
+
+      <!-- Badge -->
+      <div class="flex justify-center mb-6 animate-fadeup">
+        <span class="badge badge-dark">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="#4ade80"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          IGREEN ENERGIA
+        </span>
+      </div>
+
+      <!-- Título -->
+      <h1 class="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 animate-fadeup delay-1">
+        Pagando energia mais cara do que precisa na sua 
+        <span class="text-green-vivid">empresa</span> e <span class="text-green-vivid">residência?</span>
+      </h1>
+
+      <!-- Subtítulo -->
+      <p class="text-green-300/80 text-lg md:text-xl leading-relaxed mb-10 max-w-xl mx-auto animate-fadeup delay-2">
+        Reduza até <strong class="text-white">15%</strong> na sua conta de luz com energia limpa da iGreen — sem obras, sem investimento e sem mudar nada na operação.
+      </p>
+
+      <!-- CTA -->
+      <div class="flex justify-center animate-fadeup delay-3">
+        <a href="https://wa.me/5571999189327" target="_blank" rel="noopener" class="btn-wpp text-base md:text-lg">
+          <!-- WhatsApp icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="white">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.121.554 4.11 1.523 5.84L.057 23.886a.5.5 0 0 0 .606.606l6.046-1.466A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.665-.514-5.183-1.41l-.371-.219-3.585.869.883-3.585-.234-.382A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+          </svg>
+          Quero avaliar minha conta no WhatsApp
+        </a>
+      </div>
+
+      <!-- Stats visuais -->
+      <div class="mt-14 grid grid-cols-3 gap-4 max-w-sm mx-auto animate-fadeup delay-4">
+        <div class="text-center">
+          <div class="text-green-vivid font-display font-extrabold text-2xl">15%</div>
+          <div class="text-gray-400 text-xs mt-1">de desconto</div>
+        </div>
+        <div class="text-center border-x border-green-900/60">
+          <div class="text-green-vivid font-display font-extrabold text-2xl">R$0</div>
+          <div class="text-gray-400 text-xs mt-1">investimento</div>
+        </div>
+        <div class="text-center">
+          <div class="text-green-vivid font-display font-extrabold text-2xl">100%</div>
+          <div class="text-gray-400 text-xs mt-1">online</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Curva de transição -->
+    <div class="absolute bottom-0 left-0 right-0 overflow-hidden leading-none">
+      <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="block w-full h-10 md:h-14">
+        <path d="M0,60 C360,0 1080,0 1440,60 L1440,60 L0,60 Z" fill="#f9fafb"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       SEÇÃO 2 — QUEM TE ATENDE
+  ═══════════════════════════════════════════ -->
+  <section class="bg-gray-50 py-20 px-5">
+    <div class="max-w-5xl mx-auto">
+      <div class="flex flex-col md:flex-row items-center gap-12 md:gap-16">
+
+        <!-- Ilustração / Avatar -->
+        <div class="flex-shrink-0 w-full md:w-80">
+          <div class="relative mx-auto w-64 md:w-full">
+            <!-- Card de pessoa -->
+            <div class="bg-white rounded-2xl shadow-xl p-6 text-center border border-gray-100">
+              <!-- Avatar placeholder com ícone -->
+              <div class="w-24 h-24 rounded-full bg-gradient-to-br from-green-400 to-green-700 flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+              </div>
+              <div class="font-display font-bold text-gray-800 text-lg">Consultor iGreen</div>
+              <div class="text-gray-500 text-sm mt-1">Especialista em energia</div>
+              <!-- Mini badge -->
+              <div class="mt-3 inline-flex items-center gap-1.5 bg-green-50 border border-green-200 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">
+                <span class="w-2 h-2 rounded-full bg-green-500 inline-block"></span>
+                Online agora
+              </div>
+            </div>
+            <!-- Detalhe decorativo -->
+            <div class="absolute -top-4 -right-4 w-20 h-20 bg-green-100 rounded-full -z-10 opacity-60"></div>
+            <div class="absolute -bottom-4 -left-4 w-14 h-14 bg-green-200 rounded-full -z-10 opacity-40"></div>
+          </div>
+        </div>
+
+        <!-- Texto -->
+        <div class="flex-1 text-center md:text-left">
+          <span class="badge badge-light mb-4">QUEM TE ATENDE</span>
+          <h2 class="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-6">
+            Quem te atende também é<br/>
+            <span class="text-green-600">usuário do negócio</span>
+          </h2>
+
+          <p class="text-gray-600 text-base md:text-lg leading-relaxed mb-4">
+            Quem avalia sua conta une prática empreendedora e credibilidade iGreen. Ele conhece a realidade dos custos de energia elétrica: liga/desliga luzes, conta de luz cada dia mais cara e a pressão para reduzir custos fixos.
+          </p>
+          <p class="text-gray-800 font-semibold text-base md:text-lg mb-8">
+            A análise é feita por quem entende do negócio.
+          </p>
+
+          <a href="https://wa.me/5571999189327" target="_blank" rel="noopener" class="btn-wpp">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+              <path d="M12 0C5.373 0 0 5.373 0 12c0 2.121.554 4.11 1.523 5.84L.057 23.886a.5.5 0 0 0 .606.606l6.046-1.466A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.665-.514-5.183-1.41l-.371-.219-3.585.869.883-3.585-.234-.382A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+            </svg>
+            Falar com o consultor no WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       SEÇÃO 3 — PROCESSO SIMPLES
+  ═══════════════════════════════════════════ -->
+  <section class="bg-white py-20 px-5">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <span class="badge badge-light mb-4">PROCESSO SIMPLES</span>
+        <h2 class="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900">
+          Como funciona em <span class="text-green-600">3 passos</span> simples
+        </h2>
+      </div>
+
+      <!-- Passos -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+
+        <!-- Passo 1 -->
+        <div class="flex flex-col items-center text-center">
+          <div class="step-num mb-4">1</div>
+          <div class="w-14 h-14 rounded-2xl bg-green-50 border border-green-200 flex items-center justify-center mb-4">
+            <!-- Ícone documento/envelope -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+          </div>
+          <h3 class="font-display font-bold text-gray-900 text-lg mb-2">Envie sua conta</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Envie a fatura de energia pelo WhatsApp agora.</p>
+        </div>
+
+        <!-- Seta desktop -->
+        <div class="hidden md:flex items-center justify-center absolute" style="display:none"></div>
+
+        <!-- Passo 2 -->
+        <div class="flex flex-col items-center text-center relative">
+          <!-- Linha conectora (só desktop) -->
+          <div class="hidden md:block absolute top-5 -left-4 w-8 h-0.5 bg-green-200"></div>
+          <div class="step-num mb-4">2</div>
+          <div class="w-14 h-14 rounded-2xl bg-green-50 border border-green-200 flex items-center justify-center mb-4">
+            <!-- Ícone gráfico/simulação -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+          </div>
+          <h3 class="font-display font-bold text-gray-900 text-lg mb-2">Receba a simulação</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Veja a economia personalizada em poucos dias.</p>
+        </div>
+
+        <!-- Passo 3 -->
+        <div class="flex flex-col items-center text-center relative">
+          <div class="hidden md:block absolute top-5 -left-4 w-8 h-0.5 bg-green-200"></div>
+          <div class="step-num mb-4">3</div>
+          <div class="w-14 h-14 rounded-2xl bg-green-50 border border-green-200 flex items-center justify-center mb-4">
+            <!-- Ícone check/contrato -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <h3 class="font-display font-bold text-gray-900 text-lg mb-2">Contrate online</h3>
+          <p class="text-gray-500 text-sm leading-relaxed">Finalize digitalmente, sem burocracia e sem custos.</p>
+        </div>
+      </div>
+
+      <!-- Caixa de destaque -->
+      <div class="savings-box mb-10 flex items-start gap-4">
+        <div class="flex-shrink-0 mt-1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <p class="text-green-900 text-sm md:text-base leading-relaxed">
+          O percentual de desconto depende da sua faixa de consumo. Em muitos casos, é possível chegar de 
+          <strong>8% a 14% de economia</strong> na sua conta de luz.
+        </p>
+      </div>
+
+      <!-- CTA -->
+      <div class="flex justify-center">
+        <a href="https://wa.me/5571999189327" target="_blank" rel="noopener" class="btn-wpp text-base">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.121.554 4.11 1.523 5.84L.057 23.886a.5.5 0 0 0 .606.606l6.046-1.466A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.665-.514-5.183-1.41l-.371-.219-3.585.869.883-3.585-.234-.382A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+          </svg>
+          Quero começar agora no WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       SEÇÃO 4 — PARA QUEM É
+  ═══════════════════════════════════════════ -->
+  <section class="bg-gray-50 py-20 px-5">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12">
+        <span class="badge badge-light mb-4">PARA QUEM É</span>
+        <h2 class="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
+          Para quem é <span class="text-green-600">essa solução</span>
+        </h2>
+        <p class="text-gray-500 text-base md:text-lg max-w-xl mx-auto">
+          A iGreen atende diferentes perfis de clientes com contas de energia acima de <strong class="text-gray-800">R$ 200</strong>.
+        </p>
+      </div>
+
+      <!-- Cards grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-10">
+
+        <!-- Card Residências -->
+        <div class="profile-card">
+          <div class="flex items-center gap-4 mb-3">
+            <div class="w-12 h-12 rounded-xl bg-green-50 border border-green-200 flex items-center justify-center flex-shrink-0">
+              <!-- Casa -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+              </svg>
+            </div>
+            <h3 class="font-display font-bold text-gray-900 text-lg">Residências</h3>
+          </div>
+          <p class="text-gray-500 text-sm leading-relaxed">
+            Pessoas que querem reduzir o custo fixo mensal sem investir em infraestrutura.
+          </p>
+        </div>
+
+        <!-- Card Outros Comércios -->
+        <div class="profile-card">
+          <div class="flex items-center gap-4 mb-3">
+            <div class="w-12 h-12 rounded-xl bg-green-50 border border-green-200 flex items-center justify-center flex-shrink-0">
+              <!-- Loja -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/>
+                <path d="M3 9l2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"/>
+                <path d="M12 3v6"/>
+              </svg>
+            </div>
+            <h3 class="font-display font-bold text-gray-900 text-lg">Outros Comércios</h3>
+          </div>
+          <p class="text-gray-500 text-sm leading-relaxed">
+            Restaurantes, mercados, farmácias e lojas com alto consumo de energia.
+          </p>
+        </div>
+
+        <!-- Card Empresas -->
+        <div class="profile-card">
+          <div class="flex items-center gap-4 mb-3">
+            <div class="w-12 h-12 rounded-xl bg-green-50 border border-green-200 flex items-center justify-center flex-shrink-0">
+              <!-- Prédio/empresa -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+              </svg>
+            </div>
+            <h3 class="font-display font-bold text-gray-900 text-lg">Empresas</h3>
+          </div>
+          <p class="text-gray-500 text-sm leading-relaxed">
+            Escritórios, indústrias e prestadoras de serviço com conta de luz relevante.
+          </p>
+        </div>
+
+        <!-- Card Familiares -->
+        <div class="profile-card">
+          <div class="flex items-center gap-4 mb-3">
+            <div class="w-12 h-12 rounded-xl bg-green-50 border border-green-200 flex items-center justify-center flex-shrink-0">
+              <!-- Família/pessoas -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <h3 class="font-display font-bold text-gray-900 text-lg">Familiares</h3>
+          </div>
+          <p class="text-gray-500 text-sm leading-relaxed">
+            Casas com consumo elevado que buscam economia sustentável.
+          </p>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="flex justify-center">
+        <a href="https://wa.me/5571999189327" target="_blank" rel="noopener" class="btn-wpp text-sm md:text-base">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.121.554 4.11 1.523 5.84L.057 23.886a.5.5 0 0 0 .606.606l6.046-1.466A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.665-.514-5.183-1.41l-.371-.219-3.585.869.883-3.585-.234-.382A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+          </svg>
+          Ver se minha conta se encaixa no perfil
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       SEÇÃO 5 — FOOTER / CTA FINAL
+  ═══════════════════════════════════════════ -->
+  <section class="footer-bg py-20 px-5">
+    <div class="max-w-2xl mx-auto text-center">
+
+      <!-- Badge -->
+      <div class="flex justify-center mb-5">
+        <span class="badge badge-dark">
+          <!-- Shield check -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <polyline points="9 12 11 14 15 10"/>
+          </svg>
+          SEM RISCO
+        </span>
+      </div>
+
+      <h2 class="font-display text-2xl sm:text-3xl md:text-4xl font-extrabold text-white mb-6 leading-tight">
+        A análise é <span class="text-green-vivid">gratuita</span> e sem compromisso
+      </h2>
+
+      <p class="text-gray-300 text-base md:text-lg leading-relaxed mb-5">
+        Você não perde nada ao enviar sua conta. Em poucos minutos, o consultor mostra exatamente quanto você pode economizar por mês e por ano. Sem pressão, sem obrigação.
+      </p>
+
+      <p class="text-gray-400 text-base leading-relaxed mb-10">
+        Aproveite para reduzir um dos maiores custos fixos da sua empresa ou residência com energia limpa e desconto direto na fatura.
+      </p>
+
+      <!-- Botões -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <!-- WhatsApp -->
+        <a href="https://wa.me/5571999189327" target="_blank" rel="noopener" class="btn-wpp w-full sm:w-auto justify-center text-base">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="white">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.121.554 4.11 1.523 5.84L.057 23.886a.5.5 0 0 0 .606.606l6.046-1.466A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.665-.514-5.183-1.41l-.371-.219-3.585.869.883-3.585-.234-.382A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+          </svg>
+          Quero começar agora
+        </a>
+
+        <!-- Instagram -->
+        <a href="https://www.instagram.com/amologica/" target="_blank" rel="noopener" class="btn-ig w-full sm:w-auto justify-center text-base">
+          <!-- Instagram SVG inline -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
+          Instagram
+        </a>
+      </div>
+
+      <!-- Rodapé mínimo -->
+      <p class="text-gray-600 text-xs mt-14">
+        © 2025 iGreen Energia · Todos os direitos reservados
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       BOTÃO FLUTUANTE WHATSAPP
+  ═══════════════════════════════════════════ -->
+  <a href="https://wa.me/5571999189327" target="_blank" rel="noopener" class="float-wpp" title="Falar no WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+      <path d="M12 0C5.373 0 0 5.373 0 12c0 2.121.554 4.11 1.523 5.84L.057 23.886a.5.5 0 0 0 .606.606l6.046-1.466A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.891 0-3.665-.514-5.183-1.41l-.371-.219-3.585.869.883-3.585-.234-.382A9.96 9.96 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+    </svg>
+  </a>
+
+</body>
+</html>
